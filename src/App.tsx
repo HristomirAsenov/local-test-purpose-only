@@ -1,4 +1,3 @@
-import "./App.css";
 import ProseEditor from "./components/ProseMirrorEditor/ProseMirrorEditor";
 
 function App() {

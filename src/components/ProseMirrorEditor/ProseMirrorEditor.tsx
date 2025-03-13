@@ -1,66 +1,29 @@
+import { useRef, useEffect } from "react";
 
-import { schema } from "prosemirror-schema-basic"
-import { EditorState } from "prosemirror-state"
-import { EditorView } from "prosemirror-view"
-import { useRef, useEffect } from "react"
-import { plugins } from "./plugins"
+import "./styles.css";
+import "./editor-styles.css";
 
-import "./styles.css"
+import { createView } from "./utils";
 
 const ProseMirrorEditor: React.FC = () => {
-  const editorRef = useRef<HTMLDivElement | null>(null)
-  const editorViewRef = useRef<EditorView | null>(null)
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const editorViewRef = useRef<any | null>(null);
 
   useEffect(() => {
-    if (!editorRef.current) return
-      const editorState = EditorState.create({
-        schema,
-        plugins: plugins(),
-      })
-      editorViewRef.current = new EditorView(editorRef.current, {
-        state: editorState,
-      })
-
+    if (!editorRef.current || !contentRef.current) return;
+    editorViewRef.current = createView(editorRef.current, contentRef.current);
     return () => {
-        editorViewRef.current?.destroy()
-    }
-  }, [])
+      editorViewRef.current?.destroy();
+    };
+  }, []);
 
-  return <div id="prose-mirror-editor" ref={editorRef} />
-}
+  return (
+    <>
+      <div id="prose-mirror-editor" ref={editorRef}></div>
+      <div id="prose-mirror-content" ref={contentRef}></div>
+    </>
+  );
+};
 
-export default ProseMirrorEditor
-
-
-// const ProseMirrorEditor: React.FC = () => {
-//   const editorRef = useRef<HTMLDivElement>(null);
-//   const viewRef = useRef<EditorView | null>(null);
-
-//   useEffect(() => {
-//     if (!editorRef.current) return;
-
-//     const state = EditorState.create({
-//       doc: DOMParser.fromSchema(schema).parse(document.createElement("div")),
-//       plugins: [history(), keymap(baseKeymap)],
-//     });
-
-//     const view = new EditorView(editorRef.current, {
-//       state,
-//     });
-
-//     viewRef.current = view;
-
-//     return () => {
-//       view.destroy();
-//     };
-//   }, []);
-
-//   return (
-//     <div
-//       className="prose-mirror-editor"
-//       ref={editorRef}
-//     ></div>
-//   );
-// };
-
-// export default ProseMirrorEditor;
+export default ProseMirrorEditor;
