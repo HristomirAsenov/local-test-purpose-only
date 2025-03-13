@@ -1,0 +1,8 @@
+@import "prosemirror-view/style/prosemirror.css";
+
+.ProseMirror {
+    min-height: 200px;
+    min-width: 200px;
+    border: 1px solid yellow;
+    padding: 15px;
+}
